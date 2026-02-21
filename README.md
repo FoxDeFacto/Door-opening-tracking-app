@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Door Opening Tracking App 🚪
 
-## Getting Started
+Tato aplikace slouží k detailnímu sledování a auditu stavů dveří. Umožňuje uživatelům vytvářet vlastní instance počítání, interaktivně zaznamenávat změny stavů pomocí animovaného rozhraní a následně vizualizovat sebraná data v přehledných statistikách.
 
-First, run the development server:
+Projekt je postaven na nejmodernějším stacku s využitím Next.js 15 (App Router), striktního TypeScriptu a bezpečné databázové vrstvy přes Drizzle ORM.
 
+## Hlavní funkce
+
+* **Komplexní Autentizace:** Bezpečné přihlašování pomocí hesla (šifrování přes `bcryptjs`) nebo pomocí GitHub OAuth účtu (implementováno přes Auth.js v5).
+* **Správa Instancí:** Každý uživatel má svůj vlastní oddělený dashboard pro vytváření a mazání sledovacích instancí.
+* **Interaktivní Počítadlo:** Klientské rozhraní s "Optimistic UI" updaty pro okamžitou odezvu při klikání, doplněné o plynulé 3D animace dveří (Framer Motion).
+* **Auditní Logování:** Každá změna stavu (inkrementace/dekrementace) je asynchronně zaznamenána do databáze s přesným časovým razítkem.
+* **Statistiky a Vizualizace:** Automaticky generované responzivní sloupcové grafy a historie posledních změn pro každou instanci (čisté Tailwind CSS).
+* **Smart Proxy Routing:** Skryté přesměrování (rewrites) kořenové adresy na `/login` pro zachování čisté URL bez agresivního cachování v prohlížeči.
+
+## Sledované stavy dveří
+
+1. **Zavřený -> Zavřený** (Dveře byly zavřené a neotevřely se)
+2. **Zavřený -> Otevřený** (Dveře byly zavřené a někdo je otevřel)
+3. **Otevřený -> Zavřený** (Dveře byly otevřené a někdo je zavřel)
+4. **Otevřený -> Otevřený** (Dveře byly otevřené a zůstaly tak)
+
+## Použité Technologie
+
+* **Framework:** Next.js 15 (App Router, Turbopack, zapnutý React Compiler)
+* **Jazyk:** React 19, TypeScript
+* **Databáze:** PostgreSQL (komunikace přes `postgres` driver)
+* **ORM:** Drizzle ORM (`drizzle-kit` pro migrace)
+* **Autentizace:** NextAuth (Auth.js v5 Beta) + `@auth/drizzle-adapter`
+* **Styling:** Tailwind CSS, Lucide React (ikony)
+* **Animace:** Framer Motion
+
+## Požadavky pro spuštění
+
+Před lokálním spuštěním se ujistěte, že máte k dispozici:
+* Nainstalované [Node.js](https://nodejs.org/) (ideálně verze 20+).
+* Přístup k PostgreSQL databázi (lze využít lokální instanci nebo cloudová řešení jako Neon.tech či Supabase).
+* Zaregistrovanou GitHub OAuth aplikaci pro získání Client ID a Secret (pro funkční GitHub přihlášení).
+
+## Instalace a nastavení
+
+### 1. Klonování repozitáře a instalace závislostí
+Naklonujte si repozitář a nainstalujte všechny potřebné NPM balíčky:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+npm install

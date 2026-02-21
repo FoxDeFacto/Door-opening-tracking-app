@@ -15,6 +15,8 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
 
+    console.log(email,password);
+
     const result = await signIn("credentials", {
       email,
       password,
@@ -50,7 +52,7 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required 
-              className="w-full border border-blue-200 rounded-lg p-2 focus:ring-2 focus:ring-yellow-400 focus:outline-none"
+              className="w-full border border-blue-200 rounded-lg p-2 focus:ring-2 focus:ring-yellow-400 focus:outline-none text-blue-900 bg-white"
             />
           </div>
 
@@ -61,7 +63,7 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required 
-              className="w-full border border-blue-200 rounded-lg p-2 focus:ring-2 focus:ring-yellow-400 focus:outline-none"
+              className="w-full border border-blue-200 rounded-lg p-2 focus:ring-2 focus:ring-yellow-400 focus:outline-none text-blue-900 bg-white"
             />
           </div>
 
@@ -75,7 +77,7 @@ export default function LoginPage() {
 
         <div className="mt-6 border-t border-blue-100 pt-6">
           <button 
-            type="button" // Zabrání tomu, aby se tlačítko chovalo jako odeslání formuláře
+            type="submit"
             onClick={() => signIn("github", { redirectTo: "/dashboard" })}
             className="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
           >
