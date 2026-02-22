@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { logStateAction } from "@/lib/actions"; // Ujistěte se, že cesta je správná podle vašeho projektu
+import { logStateAction } from "@/lib/actions";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowLeft, BarChart2 } from "lucide-react";
@@ -74,32 +74,37 @@ export default function CounterClient({ instanceId, initialCounts }: CounterClie
         <div className="bg-white rounded-2xl p-6 shadow-2xl flex flex-col justify-center gap-4">
           <h2 className="text-xl font-bold text-blue-900 text-center mb-2">Záznam stavů</h2>
           
-          {DOOR_STATES.map((state) => (
-            <div key={state.id} className="flex items-center justify-between bg-blue-50 p-4 rounded-xl border border-blue-100">
-              <span className="font-semibold text-blue-900 w-1/2">{state.label}</span>
-              
-              <div className="flex items-center gap-4">
-                <button
-                  onClick={() => handleAction(state.id, "decrement", state.doorOpen)}
-                  disabled={counts[state.id as keyof typeof counts] === 0}
-                  className="w-10 h-10 rounded-full bg-blue-200 text-blue-900 font-bold text-xl hover:bg-blue-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center transition-colors"
-                >
-                  -
-                </button>
+            {Object.entries(DOOR_STATES).map(([key, state]) => {
+            const stateId = Number(key); // Převod klíče (string) zpět na číslo pro handleAction
+            const countKey = stateId as keyof typeof counts; // Typování pro bezpečný přístup k objektu counts
+
+            return (
+              <div key={stateId} className="flex items-center justify-between bg-blue-50 p-4 rounded-xl border border-blue-100">
+                <span className="font-semibold text-blue-900 w-1/2">{state.label}</span>
                 
-                <span className="text-2xl font-bold text-blue-900 w-8 text-center">
-                  {counts[state.id as keyof typeof counts]}
-                </span>
-                
-                <button
-                  onClick={() => handleAction(state.id, "increment", state.doorOpen)}
-                  className="w-12 h-12 rounded-full bg-yellow-400 text-blue-900 font-bold text-2xl hover:bg-yellow-500 flex items-center justify-center shadow-md transition-transform active:scale-95"
-                >
-                  +
-                </button>
+                <div className="flex items-center gap-4">
+                  <button
+                    onClick={() => handleAction(stateId, "decrement", state.doorOpen)}
+                    disabled={counts[countKey] === 0}
+                    className="w-10 h-10 rounded-full bg-blue-200 text-blue-900 font-bold text-xl hover:bg-blue-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center transition-colors"
+                  >
+                    -
+                  </button>
+                  
+                  <span className="text-2xl font-bold text-blue-900 w-8 text-center">
+                    {counts[countKey]}
+                  </span>
+                  
+                  <button
+                    onClick={() => handleAction(stateId, "increment", state.doorOpen)}
+                    className="w-12 h-12 rounded-full bg-yellow-400 text-blue-900 font-bold text-2xl hover:bg-yellow-500 flex items-center justify-center shadow-md transition-transform active:scale-95"
+                  >
+                    +
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
       </div>

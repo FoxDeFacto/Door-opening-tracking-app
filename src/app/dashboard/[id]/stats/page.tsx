@@ -4,14 +4,8 @@ import { auditLogs, doorInstances } from "@/db/schema";
 import { eq, desc } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Activity, DoorClosed, DoorOpen } from "lucide-react";
-
-const DOOR_STATES = {
-  1: { label: "Zavřený -> Zavřený", icon: DoorClosed },
-  2: { label: "Zavřený -> Otevřený", icon: DoorOpen },
-  3: { label: "Otevřený -> Zavřený", icon: DoorClosed },
-  4: { label: "Otevřený -> Otevřený", icon: DoorOpen },
-};
+import { ArrowLeft, Activity } from "lucide-react";
+import { DOOR_STATES } from "@/lib";
 
 export default async function StatsPage({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth();
@@ -33,6 +27,7 @@ export default async function StatsPage({ params }: { params: Promise<{ id: stri
   const logs = await db.query.auditLogs.findMany({
     where: eq(auditLogs.instanceId, instanceId),
     orderBy: [desc(auditLogs.createdAt)],
+    limit: 200
   });
 
   // 3. Výpočet aktuálních stavů (sečtení incrementů a odečtení decrementů)
@@ -112,7 +107,7 @@ export default async function StatsPage({ params }: { params: Promise<{ id: stri
               Poslední aktivita
             </h2>
             
-            <div className="overflow-y-auto flex-grow pr-2 space-y-3 custom-scrollbar">
+            <div className="overflow-y-auto grow pr-2 space-y-3 custom-scrollbar">
               {logs.length === 0 ? (
                 <p className="text-blue-400 text-center py-4">Zatím žádné záznamy.</p>
               ) : (
