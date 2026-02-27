@@ -16,11 +16,9 @@ jobs:
           git clone https://git.lynder.dev/foxdefacto/DoorTrackingApp.git .
           git checkout ${{ github.sha }}
 
-      # --- TENTO KROK PŘIDÁVÁME ---
       - name: Create .env file from Secrets
         run: |
           echo "${{ secrets.ENV_FILE_CONTENT }}" > .env
-      # ----------------------------
 
       - name: Build Doorweb Docker Image
         run: |
