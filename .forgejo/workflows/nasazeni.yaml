@@ -18,12 +18,7 @@ jobs:
 
       - name: Create .env file from Secrets
         run: |
-          echo "${{ secrets.ENV_FILE_CONTENT }}" > .env
-
-      - name: Verify .env exists
-        run: |
-          ls -la .env
-          cat .env # Pozor, vypíše to hesla do logu, po otestování smaž!          
+          echo "${{ secrets.ENV_FILE_CONTENT }}" > .env       
 
       - name: Build Doorweb Docker Image
         run: |
