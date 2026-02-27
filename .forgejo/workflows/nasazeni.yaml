@@ -5,7 +5,7 @@ on:
     branches: [main, master]
   pull_request:
     branches: [main, master]
-    
+
 jobs:
   build-and-deploy:
     name: Build and Deploy Application
@@ -15,9 +15,14 @@ jobs:
         run: |
           git clone https://git.lynder.dev/foxdefacto/DoorTrackingApp.git .
           git checkout ${{ github.sha }}
-      
+
+      - name: Create .env file from Secrets
+        run: |
+          echo "${{ secrets.ENV_FILE_CONTENT }}" > .env       
+
       - name: Build Doorweb Docker Image
         run: |
+          # Podman automaticky zahrne .env do buildu, pokud ho tam Dockerfile kopíruje (COPY . .)
           podman build -t localhost:5000/door-web:latest -f Dockerfile .
           
       - name: Push Doorweb Image to Local Registry
