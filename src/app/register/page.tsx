@@ -36,7 +36,7 @@ export default function RegisterPage() {
               name="password" 
               type="password" 
               required 
-              className="w-full border border-blue-200 rounded-lg p-2 focus:ring-2 focus:ring-yellow-400 focus:outline-none"
+              className="w-full border border-blue-200 rounded-lg p-2 focus:ring-2 focus:ring-yellow-400 focus:outline-none text-blue-900 bg-white"
             />
           </div>
 
@@ -46,7 +46,7 @@ export default function RegisterPage() {
               name="repeatPassword" 
               type="password" 
               required 
-              className="w-full border border-blue-200 rounded-lg p-2 focus:ring-2 focus:ring-yellow-400 focus:outline-none"
+              className="w-full border border-blue-200 rounded-lg p-2 focus:ring-2 focus:ring-yellow-400 focus:outline-none text-blue-900 bg-white"
             />
           </div>
 
