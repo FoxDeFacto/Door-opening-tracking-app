@@ -1,0 +1,33 @@
+name: Build and Deploy Doorweb
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+    
+jobs:
+  build-and-deploy:
+    name: Build and Deploy Application
+    runs-on: fedora
+    steps:
+      - name: Checkout code
+        run: |
+          git clone https://git.lynder.dev/foxdefacto/DoorTrackingApp.git .
+          git checkout ${{ github.sha }}
+      
+      - name: Build Doorweb Docker Image
+        run: |
+          podman build -t localhost:5000/door-web:latest -f Dockerfile .
+          
+      - name: Push Doorweb Image to Local Registry
+        run: podman push localhost:5000/door-web:latest
+      
+      - name: Stop Running Service
+        run: |
+          sudo systemctl stop doorweb.service
+
+      - name: Deploy New Service
+        run: |
+          podman pull localhost:5000/door-web:latest
+          sudo systemctl start doorweb.service
