@@ -6,3 +6,16 @@ export const DOOR_STATES = {
   3: { label: "Otevřený -> Zavřený", doorOpen: false, icon: DoorClosed},
   4: { label: "Otevřený -> Otevřený", doorOpen: true, icon: DoorOpen },
 } as const;
+
+export enum PaginationDirection {
+  UP = 1,
+  DOWN = -1,
+  STAY=0,
+}
+
+export type DoorInstance = {
+    id: string,
+    name: string,
+    userId: string,
+    createdAt: Date;
+}
