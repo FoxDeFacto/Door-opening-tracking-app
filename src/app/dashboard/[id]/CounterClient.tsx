@@ -5,22 +5,23 @@ import { logStateAction } from "@/lib/actions";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowLeft, BarChart2 } from "lucide-react";
-import { DOOR_STATES } from "@/lib";
+import { DOOR_STATES, DoorInstance } from "@/lib";
 
 interface CounterClientProps {
-  instanceId: string;
+  doorInstance: DoorInstance;
   initialCounts: {
     1: number;
     2: number;
     3: number;
     4: number;
   };
+  doorState: boolean;
 }
 
-export default function CounterClient({ instanceId, initialCounts }: CounterClientProps) {
+export default function CounterClient({ doorInstance, initialCounts, doorState }: CounterClientProps) {
   const [isPending, startTransition] = useTransition();
-  const [counts, setCounts] = useState(initialCounts); //Nastaví výchozí stav podle informací z historie
-  const [visualDoorState, setVisualDoorState] = useState(false); 
+  const [counts, setCounts] = useState(initialCounts);
+  const [visualDoorState, setVisualDoorState] = useState(doorState); 
 
   const handleAction = (stateId: number, action: "increment" | "decrement", doorOpen: boolean) => {
     setVisualDoorState(doorOpen);
@@ -31,7 +32,7 @@ export default function CounterClient({ instanceId, initialCounts }: CounterClie
 
     startTransition(() => {
       // Bezpečností funkce, kdyby někdo fakt klikal
-      logStateAction(instanceId, stateId, action);
+      logStateAction(doorInstance.id, stateId, action);
     });
   };
 
@@ -43,7 +44,7 @@ export default function CounterClient({ instanceId, initialCounts }: CounterClie
         <Link href="/dashboard" className="flex items-center gap-2 hover:text-yellow-400 transition-colors bg-blue-700/50 px-4 py-2 rounded-lg">
           <ArrowLeft size={20} /> Zpět na přehled
         </Link>
-        <Link href={`/dashboard/${instanceId}/stats`} className="flex items-center gap-2 hover:text-yellow-400 transition-colors bg-blue-700/50 px-4 py-2 rounded-lg">
+        <Link href={`/dashboard/${doorInstance.id}/stats`} className="flex items-center gap-2 hover:text-yellow-400 transition-colors bg-blue-700/50 px-4 py-2 rounded-lg">
           <BarChart2 size={20} /> Statistiky
         </Link>
       </div>
@@ -51,8 +52,16 @@ export default function CounterClient({ instanceId, initialCounts }: CounterClie
       <div className="w-full max-w-4xl grid grid-cols-1 lg:grid-cols-2 gap-8">
         
         {/* Vizuál dveří (Animace) */}
-        <div className="bg-white rounded-2xl p-8 flex flex-col items-center justify-center shadow-2xl h-96">
-          <h2 className="text-xl font-bold text-blue-900 mb-8">Aktuální stav dveří</h2>
+        <div className="bg-white rounded-2xl p-6 flex flex-col items-center shadow-2xl h-96 relative">
+          
+          <div className="text-center w-full mb-6 pb-4 border-b border-blue-50">
+            <p className="text-xl font-bold text-blue-400 mb-1">
+              Aktuální stav dveří
+            </p>
+            <h2 className="text-2xl font-bold text-blue-900 text-center uppercase mb-2" title={doorInstance.name}>
+              {doorInstance.name}
+            </h2>
+          </div>
           
           <div className="relative w-40 h-64 bg-gray-200 border-4 border-blue-900 rounded-t-lg perspective-1000">
             <motion.div

@@ -7,6 +7,7 @@ import { Trash2, DoorOpen, ArrowBigRight, ArrowBigLeft,RotateCcw } from "lucide-
 import { Session } from "next-auth";
 import { DoorInstance, PaginationDirection } from "@/lib";
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import { color } from "framer-motion";
 
 type DashboardClientProps = {
   instances : DoorInstance[],
@@ -180,21 +181,23 @@ export default function DashboardClient({instances, session, page,totalPages, fi
             ))
           )}
         </div>
-        <div className="mx-auto flex justify-center gap-2">
+            <div className="mx-auto flex justify-center gap-2">
             <button 
-                onClick={()=>handlePagination(page,PaginationDirection.DOWN)}
-                className="flex bg-white px-2 py-1 rounded-2xl"
+                onClick={() => handlePagination(page, PaginationDirection.DOWN)}
+                className="flex items-center justify-center bg-white text-blue-600 hover:bg-blue-400 hover:text-white px-3 py-1.5 rounded-2xl transition-colors"
             >
-                <ArrowBigLeft size={15}/></button>
-            {(totalPages >= (Number(page)+1)) &&    
-            <button 
-                onClick={()=>handlePagination(page,PaginationDirection.UP)}
-                className="flex bg-white px-2 py-1 rounded-2xl"
-            >
-                <ArrowBigRight size={15}/>
+                <ArrowBigLeft size={18} fill="currentColor" />
             </button>
-            }
-        </div>
+            
+            {(totalPages >= (Number(page) + 1)) && (
+                <button 
+                onClick={() => handlePagination(page, PaginationDirection.UP)}
+                className="flex items-center justify-center bg-white text-blue-600 hover:bg-blue-400 hover:text-white px-3 py-1.5 rounded-2xl transition-colors"
+                >
+                <ArrowBigRight size={18} fill="currentColor" />
+                </button>
+            )}
+            </div>
       </div>
     </div>
   );
