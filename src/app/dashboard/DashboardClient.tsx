@@ -66,7 +66,7 @@ export default function DashboardClient({instances, session, page,totalPages, fi
                     <p className="text-blue-600 font-medium">Vítejte, {session?.user?.name}</p>
                     
                     <button 
-                        onClick={() => signOut({ callbackUrl: "/login" })}
+                        onClick={() => signOut({ redirectTo: "/login" })}
                         className="text-xs bg-red-100 hover:bg-red-200 text-red-700 py-1 px-3 rounded-md transition-colors font-bold"
                     >
                         Odhlásit se
